@@ -1,0 +1,15 @@
+@use "sass:math";
+
+@function rems($px) {
+  $rems: math.div($px, 16) + rem;
+  @return $rems;
+}
+
+@function clamps($min-size, $max-size, $min-breakpoint: 320, $max-breakpoint: 1440, $unit: vw) {
+  $slope: math.div($max-size - $min-size, $max-breakpoint - $min-breakpoint);
+  $slope-to-unit: $slope * 100;
+  $intercept-rem: rems($min-size - $slope * $min-breakpoint);
+  $min-size-rem: rems($min-size);
+  $max-size-rem: rems($max-size);
+  @return clamp(#{$min-size-rem}, #{$slope-to-unit}#{$unit} + #{$intercept-rem}, #{$max-size-rem});
+}
